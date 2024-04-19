@@ -20,14 +20,17 @@ const ChannelModal = ({ active, handleModal, token, id, setErrorMessage }) => {
             },
             body: JSON.stringify({tag: tag})
         };
-
-        const response = await fetch(`/channel/create`, requestOptions);
-        if (!response.ok) {
+        if(tag){
+            const response = await fetch(`/channel/create`, requestOptions);
+            if (!response.ok) {
+                setChannelError(true);
+            } else {
+                cleanFormData();
+                handleModal();
+                setChannelError(false);
+            }
+        }else{
             setChannelError(true);
-        } else {
-            cleanFormData();
-            handleModal();
-            setChannelError(false);
         }
     }
 
@@ -61,7 +64,7 @@ const ChannelModal = ({ active, handleModal, token, id, setErrorMessage }) => {
 
                 { channelError && (
                     <div className="notification is-danger">
-                        <button class="delete"></button>
+                        <button className="delete" onClick={() => setChannelError(false)}></button>
                         <p>Something went wrong! Validate the "Channel name" field, is mandatory</p>
                     </div>
                 )}

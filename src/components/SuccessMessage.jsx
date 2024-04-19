@@ -1,12 +1,12 @@
 import React from "react";
 
-const ErrorMessage = ({ message, onClose }) => (
+const SuccessMessage = ({ message, onClose }) => (
     message && (
-        <div className="notification is-danger">
+        <div className="notification is-primary">
             <button className="delete" onClick={onClose}></button>
             <p className="has-text-centered">{message}</p>
         </div>
     )
 );
 
-export default ErrorMessage;
+export default SuccessMessage;

@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import moment from "moment";
 import ErrorMessage from "../ErrorsMessage";
 import { UserContext } from "../../context/UserContext";
 import ChannelModal from "./ChannelModal";
 import { useNavigate } from "react-router-dom";
+import SuccessMessage from "../SuccessMessage";
 
 const ChannelList = () =>{
     const [token] = useContext(UserContext);
     const [channels, setChannels] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [activeModal, setActiveModal] = useState(false);
     const [id, setId] = useState(null);
@@ -59,7 +60,9 @@ const ChannelList = () =>{
             const data = await response.json();
             setErrorMessage(data.detail);
         } else  {
+            const data = await response.json();
             getChannels();
+            setSuccessMessage(data.message)
         }
     };
 
@@ -77,9 +80,17 @@ const ChannelList = () =>{
             const data = await response.json();
             setErrorMessage(data.detail);
         } else  {
+            const data = await response.json();
             getChannels();
+            setSuccessMessage(data.message)
         }
     };
+
+    const handleCloseError = () => {
+        setErrorMessage('');
+        setSuccessMessage('');
+    };
+
 
 
     return (
@@ -97,7 +108,8 @@ const ChannelList = () =>{
             >
                 Return to notifications
             </button>
-            <ErrorMessage message={errorMessage} />
+            <ErrorMessage message={errorMessage} onClose={handleCloseError} />
+            <SuccessMessage message={successMessage} onClose={handleCloseError} />
             {loading && channels ? (
                 <table className="table is-fullwidth">
                     <thead>
